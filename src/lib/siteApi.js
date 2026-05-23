@@ -7,7 +7,17 @@ export async function submitContactLead(payload) {
     body: JSON.stringify(payload),
   });
 
-  const data = await res.json().catch(() => ({}));
+  const text = await res.text();
+  let data = {};
+  try {
+    data = text ? JSON.parse(text) : {};
+  } catch {
+    throw new Error(
+      res.ok
+        ? "Invalid server response"
+        : "Could not reach API. If you use anilaxsoftware.com, point DNS to the VPS (72.61.227.154) or open the site at http://72.61.227.154",
+    );
+  }
   if (!res.ok) {
     throw new Error(data.error ?? "Failed to submit");
   }
