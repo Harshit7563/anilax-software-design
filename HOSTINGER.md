@@ -32,10 +32,10 @@ Purane `anilax-software` repo par bina `package.json` / design files ke build fa
 5. Environment variables (optional):
 
 ```env
-VITE_API_URL=https://anilaxsoftware.com
+VITE_API_URL=https://api.anilaxsoftware.com
 ```
 
-(Use your real API URL if backend is on another server.)
+Backend deploy: repo `anilax-software-backend` → see `HOSTINGER.md` there (subdomain `api.anilaxsoftware.com` + Supabase).
 
 6. Redeploy
 
