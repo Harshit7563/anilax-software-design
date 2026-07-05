@@ -15,7 +15,7 @@ export async function submitContactLead(payload) {
     throw new Error(
       res.ok
         ? "Invalid server response"
-        : "Could not reach API. If you use anilaxsoftware.com, point DNS to the VPS (72.61.227.154) or open the site at http://72.61.227.154",
+        : `Could not reach API. Check that ${import.meta.env.VITE_API_URL || "https://anilaxsoftware.com"}/api is live and DNS points to your server.`,
     );
   }
   if (!res.ok) {
@@ -36,4 +36,34 @@ export async function recordPartnerSignup(payload) {
     throw new Error(data.error ?? "Failed to record signup");
   }
   return data;
+}
+
+/** Forward Shree AI conversation to admin contact leads */
+export async function submitShreeConversation({
+  name,
+  email,
+  phone,
+  topic,
+  transcript,
+  pathname,
+  reason,
+}) {
+  const requirement = [
+    transcript,
+    "",
+    phone ? `Phone: ${phone}` : "",
+    reason ? `Reason: ${reason}` : "",
+  ]
+    .filter(Boolean)
+    .join("\n");
+
+  return submitContactLead({
+    name,
+    email,
+    industry: topic || "Shree AI Chat",
+    requirement,
+    sourcePage: pathname,
+    apiName: "Shree AI",
+    categoryTitle: reason || "Shree AI handoff",
+  });
 }
